@@ -11,7 +11,11 @@ class HomeCubit extends Cubit<HomeState> {
 
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      emit(HomeTimerStarted(state.duration + const Duration(seconds: 1)));
+      emit(
+        HomeTimerStarted(
+          state.duration + const Duration(seconds: 1),
+        ),
+      );
     });
   }
 

@@ -22,30 +22,35 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BlocBuilder<InternetCubit, InternetState>(
-                builder: (context, state) {
-                  if (state is InternetConnected && state.connectionType == ConnectionType.wifi) {
-                    return const Text('Wifi');
-                  }
-                  if (state is InternetConnected && state.connectionType == ConnectionType.mobileData) {
-                    return const Text('Mobile Data');
-                  }
-                  if (state is InternetDisconnected) {
-                    return const Text('DC');
-                  }
-                  return const CircularProgressIndicator();
-                },
+              const Text(
+                'You have been connected to the\nInternet for the past',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              const Text('You have been connected to the Internet for the past'),
               BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
                   if (state is HomeTimerStarted) {
-                    return Text(state.duration.inSeconds.toString());
+                    return Text(
+                      state.duration.inSeconds.toString(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
                   }
                   if (state is HomeInitial) {
-                    return Text(state.duration.inSeconds.toString());
+                    return Text(
+                      state.duration.inSeconds.toString(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
                   }
-                  return const CircularProgressIndicator();
+                  return const Text('Something went wrong');
                 },
               ),
             ],
