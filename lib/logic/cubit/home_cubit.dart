@@ -7,14 +7,16 @@ part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(const HomeInitial(Duration(seconds: 0)));
+  Timer? timer;
 
   void startTimer() {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       emit(HomeTimerStarted(state.duration + const Duration(seconds: 1)));
     });
   }
 
   void resetTimer() {
+    timer?.cancel();
     emit(const HomeInitial(Duration(seconds: 0)));
   }
 }
