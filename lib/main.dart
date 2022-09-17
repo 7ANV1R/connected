@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Connected',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          useMaterial3: true,
+          brightness: Brightness.dark,
         ),
         home: const HomePage(),
       ),
