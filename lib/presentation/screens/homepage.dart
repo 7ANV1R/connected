@@ -1,25 +1,53 @@
 import 'package:connected/logic/cubit/home_cubit.dart';
 import 'package:connected/logic/cubit/internet_cubit.dart';
 import 'package:connected/presentation/widget/time_box.dart';
+import 'package:connected/service/local_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  LocalNotificationService localNotificationService = LocalNotificationService();
+  @override
+  void initState() {
+    super.initState();
+    localNotificationService.initNotification();
+  }
 
   @override
   Widget build(BuildContext context) {
     final textThemeData = Theme.of(context).textTheme;
 
-    return BlocListener<InternetCubit, InternetState>(
-      listener: (context, state) {
-        if (state is InternetConnected) {
-          context.read<HomeCubit>().startTimer();
-        }
-        if (state is InternetDisconnected) {
-          context.read<HomeCubit>().resetTimer();
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<InternetCubit, InternetState>(
+          listener: (context, state) {
+            if (state is InternetConnected) {
+              context.read<HomeCubit>().startTimer();
+            }
+
+            if (state is InternetDisconnected) {
+              context.read<HomeCubit>().resetTimer();
+            }
+          },
+        ),
+        BlocListener<HomeCubit, HomeState>(
+          listener: (context, state) {
+            if (state.duration.inSeconds == 5) {
+              localNotificationService.sendNotification(
+                title: 'WARNING',
+                body: 'This is 5 sec warning',
+              );
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         body: Center(
           child: Column(
@@ -55,7 +83,15 @@ class HomePage extends StatelessWidget {
                   );
                 },
               ),
-              //TODO : showing last recorded time
+              ElevatedButton(
+                onPressed: () {
+                  localNotificationService.sendNotification(
+                    title: 'Title 1',
+                    body: 'This is body',
+                  );
+                },
+                child: const Text('Notification'),
+              )
             ],
           ),
         ),
