@@ -39,10 +39,10 @@ class _HomePageState extends State<HomePage> {
         ),
         BlocListener<HomeCubit, HomeState>(
           listener: (context, state) {
-            if (state.duration.inSeconds == 5) {
+            if (state.duration.inSeconds == 60) {
               localNotificationService.sendNotification(
-                title: 'WARNING',
-                body: 'This is 5 sec warning',
+                title: 'Touch Grass',
+                body: 'You have been connected to the Internet for the past 1 minute',
               );
             }
           },
@@ -83,15 +83,15 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-              ElevatedButton(
-                onPressed: () {
-                  localNotificationService.sendNotification(
-                    title: 'Title 1',
-                    body: 'This is body',
-                  );
-                },
-                child: const Text('Notification'),
-              )
+              // ElevatedButton(
+              //   onPressed: () {
+              //     localNotificationService.sendNotification(
+              //       title: 'Title 1',
+              //       body: 'This is body',
+              //     );
+              //   },
+              //   child: const Text('Notification'),
+              // ),
             ],
           ),
         ),
